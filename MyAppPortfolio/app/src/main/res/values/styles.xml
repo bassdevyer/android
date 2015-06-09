@@ -1,0 +1,56 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="my_button">
+        <!-- Defines the alignment of the text.  -->
+        <item name="android:textAlignment">center</item>
+        <!-- A drawable to use as the background.  -->
+        <item name="android:background">#F08C35</item>
+        <!-- Specifies the basic width of the view.   -->
+        <item name="android:layout_width">@dimen/button_width</item>
+        <!-- Specifies the basic height of the view.   -->
+        <item name="android:layout_height">wrap_content</item>
+        <!-- sets the gravity of the content of the View its used on. -->
+        <item name="android:gravity">center</item>
+        <!-- Specifies extra space on the left, top, right and bottom sides of this view.  -->
+        <item name="android:layout_margin">5dp</item>
+        <!-- Size of text.  -->
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <!-- Default text typeface style. -->
+        <item name="android:textStyle">bold</item>
+        <!-- Place a blurred shadow of text underneath the text, drawn with the specified color.  -->
+        <item name="android:shadowColor">#000000</item>
+        <!-- Horizontal offset of the shadow.  -->
+        <item name="android:shadowDx">1</item>
+        <!-- Vertical offset of the text shadow.  -->
+        <item name="android:shadowDy">1</item>
+        <!-- Blur radius of the text shadow -->
+        <item name="android:shadowRadius">2</item>
+        <!-- If true, centers this child horizontally within its parent.  -->
+        <item name="android:layout_centerHorizontal">true</item>
+        <!-- Color of text (usually same as colorForeground).  -->
+        <item name="android:textColor">#ffffff</item>
+        <!-- Sets the padding, in pixels, of all four edges. -->
+        <item name="android:padding">10dp</item>
+
+        <item name="android:onClick">onClickButton</item>
+    </style>
+    <style name="my_button.red">
+        <item name="android:background">#F50057</item>
+    </style>
+
+    <style name="title_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:textColor">#424242</item>
+    </style>
+
+</resources>
