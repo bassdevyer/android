@@ -9,7 +9,7 @@
         <!-- Defines the alignment of the text.  -->
         <item name="android:textAlignment">center</item>
         <!-- A drawable to use as the background.  -->
-        <item name="android:background">#F08C35</item>
+        <item name="android:background">@drawable/my_button</item>
         <!-- Specifies the basic width of the view.   -->
         <item name="android:layout_width">@dimen/button_width</item>
         <!-- Specifies the basic height of the view.   -->
@@ -36,11 +36,11 @@
         <item name="android:textColor">#ffffff</item>
         <!-- Sets the padding, in pixels, of all four edges. -->
         <item name="android:padding">10dp</item>
-
+        <!-- Name of the method in this View's context to invoke when the view is clicked.  -->
         <item name="android:onClick">onClickButton</item>
     </style>
     <style name="my_button.red">
-        <item name="android:background">#F50057</item>
+        <item name="android:background">@drawable/my_red_button</item>
     </style>
 
     <style name="title_text">
