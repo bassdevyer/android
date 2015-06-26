@@ -1,16 +1,26 @@
 package ec.torres.spotifystreamer;
 
-import android.support.v4.app.Fragment;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import kaaes.spotify.webapi.android.SpotifyApi;
+import kaaes.spotify.webapi.android.SpotifyService;
+import kaaes.spotify.webapi.android.models.Track;
+import kaaes.spotify.webapi.android.models.Tracks;
 
 
 /**
@@ -18,7 +28,9 @@ import java.util.List;
  */
 public class TopFragment extends Fragment {
 
-    private ArrayAdapter<String> mTopAdapter;
+    private ArrayAdapter<TrackItem> mTopAdapter;
+
+    private String mArtistId;
 
     private static final String LOG_TAG = TopFragment.class.getName();
 
@@ -29,34 +41,91 @@ public class TopFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        Intent intent = getActivity().getIntent();
+
         View rootView = inflater.inflate(R.layout.fragment_top, container, false);
 
-        String[] topArray = {
-                "Today - Sunny - 88/63",
-                "Tomorrow - Foggy - 70/46",
-                "Weds - Cloudy - 72/63",
-                "Thurs - Rainy - 64/51",
-                "Fri - Foggy - 70/46",
-                "Sat - Sunny - 76/68",
-                "Sun - Asteroids - 10/5",
-                "Today - Sunny - 88/63",
-                "Tomorrow - Foggy - 70/46",
-                "Weds - Cloudy - 72/63",
-        };
-        List<String> topList = new ArrayList<>(Arrays.asList(topArray ));
 
-        mTopAdapter = new ArrayAdapter<>(
-                getActivity(),
-                R.layout.list_item,
-                R.id.name,
-                topList);
+
+        mTopAdapter = new TopListViewAdapter(getActivity(), R.layout.track_item, new ArrayList<TrackItem>());
 
         ListView listView = (ListView) rootView.findViewById(R.id.listview_top);
 
         listView.setAdapter(mTopAdapter);
 
+        if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
+            Bundle bundle = intent.getExtras();
+            mArtistId = bundle.getString(Intent.EXTRA_TEXT);
+            FetchContentTask fetchContentTask = new FetchContentTask();
+            fetchContentTask.execute(mArtistId);
+        }
+
+
+
+//        ListView listView = (ListView) rootView.findViewById(R.id.listview_top);
+
+//        listView.setAdapter(mTopAdapter);
+
         // TODO listView.setOnItemClickListener
 
         return rootView;
+    }
+
+    public class FetchContentTask extends AsyncTask<String, Void, List<TrackItem>> {
+
+
+        @Override
+        protected List<TrackItem> doInBackground(String... params) {
+            if (params.length == 0) {
+                return null;
+            }
+            /**
+             * @see https://docs.google.com/document/d/1v4Kv5lSd8-4cs0BW6F24ccA3c1-KDQZG3EV49CUHQys/pub?embedded=true#h.vvxvgd8zz1vj
+             */
+            SpotifyApi api = new SpotifyApi();
+            SpotifyService spotify = api.getService();
+//            Tracks results = spotify.getArtistTopTrack(params[0], "EC");
+            Map<String, Object> options = new HashMap<String, Object>();
+            options.put(SpotifyService.COUNTRY, "EC");
+            Tracks results = spotify.getArtistTopTrack(params[0], options);
+//            Log.i(LOG_TAG, results.toString());
+            List<TrackItem> trackItems = new ArrayList<>();
+            for (Track track : results.tracks) {
+                // TrackItem(String trackName, String albumName, Uri albumArtThumbnailLarge, Uri albumArtThumbnailSmall, Uri previewUrl)
+                String trackName = track.name;
+                String albumName = null;
+                Uri albumArtThumbnailLarge = null;
+                Uri albumArtThumbnailSmall = null;
+                Uri previewUrl = null;
+                if (track.album != null) {
+                    albumName = track.album.name;
+                    if (track.album.images != null && track.album.images.size() > 0) {
+                        albumArtThumbnailLarge = Uri.parse(track.album.images.get(0).url).buildUpon().build();
+                        if (track.album.images.size() > 2) {
+                            albumArtThumbnailSmall = Uri.parse(track.album.images.get(2).url).buildUpon().build();
+                        } else {
+                            albumArtThumbnailSmall = albumArtThumbnailLarge;
+                        }
+                    }
+                }
+                previewUrl = Uri.parse(track.preview_url).buildUpon().build();
+
+                TrackItem trackItem = new TrackItem(trackName, albumName, albumArtThumbnailLarge, albumArtThumbnailSmall, previewUrl);
+
+                trackItems.add(trackItem);
+            }
+            return trackItems;
+        }
+
+        // Invoked on the UI thread after the background computation finishes
+        @Override
+        protected void onPostExecute(List<TrackItem> result) {
+            if (result != null && result.size() > 0) {
+                mTopAdapter.clear();
+                mTopAdapter.addAll(result);
+            } else {
+                Toast.makeText(getActivity(), getString(R.string.no_tracks_found_message), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

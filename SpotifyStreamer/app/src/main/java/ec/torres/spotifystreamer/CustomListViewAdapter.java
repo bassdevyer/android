@@ -35,9 +35,7 @@ public class CustomListViewAdapter extends ArrayAdapter<RowItem> {
 
 //        View row = super.getView(position, convertView, parent);
 
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
-        }
+        convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
 
         ImageView icon = (ImageView) convertView.findViewById(R.id.icon);
         TextView name = (TextView) convertView.findViewById(R.id.name);
