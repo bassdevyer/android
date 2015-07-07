@@ -1,7 +1,5 @@
 package ec.torres.spotifystreamer;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -18,6 +16,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
@@ -72,42 +72,60 @@ public class SearchFragment extends Fragment {
                 }
         );
 
-        // After you've created a searchable configuration and a searchable activity,
-        // as discussed above, you need to enable assisted search for each SearchView.
-        // You can do so by calling setSearchableInfo() and passing it the SearchableInfo
-        // object that represents your searchable configuration.
 
-        //SEARCH_SERVICE	Use with getSystemService(String) to retrieve a SearchManager for handling searches.
+        final SearchView searchView = (SearchView) rootView.findViewById(R.id.search_field);
 
-        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-
-        SearchView searchView = (SearchView) rootView.findViewById(R.id.search_field);
-
-        /*
-        Sets the SearchableInfo for this SearchView.
-        Properties in the SearchableInfo are used to display labels, hints, suggestions,
-        create intents for launching search results screens and controlling other affordances such as a voice button.
-        * */
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+
+                                              // for implementing typing delay in searchview
+                                              Timer timer = new Timer();
+                                              final long DELAY = 1000; // in ms
+
+                                              /**
+                                               * Called when the user submits the query.
+                                               * This could be due to a key press on the keyboard or due to pressing a submit button.
+                                               * The listener can override the standard behavior by returning true to indicate that it has handled the submit request.
+                                               * Otherwise return false to let the SearchView handle the submission by launching any associated intent.
+                                               *
+                                               * @param query the query text that is to be submitted
+                                               * @return true if the query has been handled by the listener, false to let the SearchView perform the default action.
+                                               */
                                               @Override
+
                                               public boolean onQueryTextSubmit(String query) {
-                                                  return false;
+                                                  if (query != null && !query.isEmpty()) {
+                                                      updateArtistList(query.toString());
+                                                  }
+                                                  return true;
                                               }
 
+                                              /**
+                                               * Called when the query text is changed by the user.
+                                               *
+                                               * @param newText the new content of the query text field.
+                                               * @return false if the SearchView should perform the default action of showing any suggestions if available, true if the action was handled by the listener.
+                                               */
                                               @Override
-                                              public boolean onQueryTextChange(String newText) {
+                                              public boolean onQueryTextChange(final String newText) {
+                                                  // TODO timed change
+                                                  // If text is changed, timer is cancelled
+                                                  timer.cancel();
+                                                  //instance of a new Timer
+                                                  timer = new Timer();
+                                                  // reset timer
+                                                  timer.schedule(new TimerTask() {
+                                                      @Override
+                                                      public void run() {
+                                                          onQueryTextSubmit(newText);
+                                                      }
+                                                  }, DELAY);
+                                                  return false;
 
-                                                  if (newText == null || newText.toString().trim().length() < 4) {
-                                                      mArtistAdapter.clear();
-                                                      return false;
-                                                  } else {
-                                                      updateArtistList(newText.toString());
-                                                      return false;
-                                                  }
                                               }
                                           }
+
         );
 
         /**

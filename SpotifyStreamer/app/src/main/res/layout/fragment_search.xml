@@ -16,7 +16,10 @@
     <SearchView
         android:id="@+id/search_field"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:queryHint="@string/query_hint"
+        android:inputType="text"
+        android:iconifiedByDefault="false"/>
 
     <ListView
         android:id="@+id/listview_artist"
