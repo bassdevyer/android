@@ -95,9 +95,8 @@ public class SearchFragment extends Fragment {
                                               @Override
 
                                               public boolean onQueryTextSubmit(String query) {
-                                                  if (query != null && !query.isEmpty()) {
-                                                      updateArtistList(query.toString());
-                                                  }
+                                                  searchView.clearFocus();
+                                                  updateArtistList(query.toString());
                                                   return true;
                                               }
 
@@ -118,7 +117,7 @@ public class SearchFragment extends Fragment {
                                                   timer.schedule(new TimerTask() {
                                                       @Override
                                                       public void run() {
-                                                          onQueryTextSubmit(newText);
+                                                          updateArtistList(newText.toString());
                                                       }
                                                   }, DELAY);
                                                   return false;
@@ -185,9 +184,10 @@ public class SearchFragment extends Fragment {
 
     private void updateArtistList(String searchCriteria) {
 
-        FetchContentTask fetchContentTask = new FetchContentTask();
-
-        fetchContentTask.execute(searchCriteria);
+        if (searchCriteria != null && !searchCriteria.isEmpty()) {
+            FetchContentTask fetchContentTask = new FetchContentTask();
+            fetchContentTask.execute(searchCriteria);
+        }
 
     }
 
