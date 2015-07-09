@@ -9,4 +9,45 @@
         <item name="colorPrimaryDark">#303f9f</item>
     </style>
 
+    <style name="searchview_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:queryHint">@string/query_hint</item>
+        <item name="android:inputType">text</item>
+        <item name="android:iconifiedByDefault">false</item>
+        <item name="android:singleLine">true</item>
+    </style>
+    
+    <style name="listview_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+    
+    <style name="imageview_style">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_gravity">center</item>
+        <!--<item name="android:minHeight">?android:attr/listPreferredItemHeightLarge</item>-->
+        <!--<item name="android:minWidth">?android:attr/listPreferredItemHeightLarge</item>-->
+    </style>
+
+    <style  name="name_textview">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:minHeight">?android:attr/listPreferredItemHeight</item>
+    </style>
+
+    <style name="name_textview.song_name">
+        <item name="android:minHeight">?android:attr/listPreferredItemHeightSmall</item>
+    </style>
+
+    <style name="name_textview.song_name.album_name">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
+
+
+
 </resources>

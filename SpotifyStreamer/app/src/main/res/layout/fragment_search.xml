@@ -15,16 +15,10 @@
     <!--android:id="@+id/search_field"/>-->
     <SearchView
         android:id="@+id/search_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:queryHint="@string/query_hint"
-        android:inputType="text"
-        android:iconifiedByDefault="false"/>
-
+        style="@style/searchview_style"/>
     <ListView
         android:id="@+id/listview_artist"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        style="@style/listview_style"/>
 
 
 </LinearLayout>
