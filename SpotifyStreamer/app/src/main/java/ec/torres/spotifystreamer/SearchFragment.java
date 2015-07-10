@@ -67,6 +67,7 @@ public class SearchFragment extends Fragment {
                         RowItem rowItem = mArtistAdapter.getItem(position);
                         Intent intent = new Intent(getActivity(), ec.torres.spotifystreamer.TopActivity.class);
                         intent.putExtra(Intent.EXTRA_TEXT, rowItem.getId());
+                        intent.putExtra(Intent.EXTRA_TITLE, rowItem.getName());
                         startActivity(intent);
                     }
                 }
@@ -223,8 +224,8 @@ public class SearchFragment extends Fragment {
         // Invoked on the UI thread after the background computation finishes
         @Override
         protected void onPostExecute(List<RowItem> result) {
+            mArtistAdapter.clear();
             if (result != null && result.size() > 0) {
-                mArtistAdapter.clear();
                 mArtistAdapter.addAll(result);
             } else {
                 Toast.makeText(getActivity(), getString(R.string.no_artist_found_message), Toast.LENGTH_SHORT).show();

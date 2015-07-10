@@ -58,6 +58,10 @@ public class TopFragment extends Fragment {
             mArtistId = bundle.getString(Intent.EXTRA_TEXT);
             FetchContentTask fetchContentTask = new FetchContentTask();
             fetchContentTask.execute(mArtistId);
+            if (intent.hasExtra(Intent.EXTRA_TITLE)) {
+                String mArtistName = bundle.getString(Intent.EXTRA_TITLE);
+                getActivity().getActionBar().setSubtitle(mArtistName);
+            }
         }
 
 
