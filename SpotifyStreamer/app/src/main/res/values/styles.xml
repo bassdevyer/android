@@ -10,7 +10,7 @@
     </style>
 
     <style name="searchview_style">
-        <item name="android:padding">@dimen/abc_action_bar_default_padding_material</item>
+        <item name="android:layout_margin">@dimen/default_margin</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:queryHint">@string/query_hint</item>
@@ -20,34 +20,30 @@
     </style>
 
     <style name="listview_style">
-        <item name="android:padding">@dimen/abc_action_bar_default_padding_material</item>
+        <item name="android:layout_margin">@dimen/default_margin</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
     </style>
 
     <style name="list_item">
-        <item name="android:layout_margin">@dimen/abc_action_bar_default_padding_material</item>
-        <item name="android:padding">@dimen/abc_action_bar_default_padding_material</item>
+        <item name="android:layout_margin">@dimen/default_margin</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">?android:attr/listPreferredItemHeight</item>
     </style>
 
     <style name="imageview_style">
-        <item name="android:padding">@dimen/abc_action_bar_default_padding_material</item>
+        <item name="android:layout_margin">@dimen/default_margin</item>
         <item name="android:layout_width">?android:attr/listPreferredItemHeight</item>
         <item name="android:layout_height">?android:attr/listPreferredItemHeight</item>
         <item name="android:gravity">center</item>
     </style>
 
     <style name="name_textview">
-        <item name="android:padding">@dimen/abc_action_bar_default_padding_material</item>
+        <item name="android:paddingLeft">@dimen/default_padding</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:scrollHorizontally">true</item>
         <item name="android:singleLine">true</item>
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-        <item name="android:ellipsize">marquee</item>
-        <item name="android:marqueeRepeatLimit">marquee_forever</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:minHeight">?android:attr/listPreferredItemHeight</item>
     </style>

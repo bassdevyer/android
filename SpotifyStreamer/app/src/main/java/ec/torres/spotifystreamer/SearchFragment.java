@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,6 +35,8 @@ public class SearchFragment extends Fragment {
 
     private CustomListViewAdapter mArtistAdapter;
 
+    private List<RowItem> lstArtists;
+
     private static final String LOG_TAG = SearchFragment.class.getName();
 
     public SearchFragment() {
@@ -59,7 +62,13 @@ public class SearchFragment extends Fragment {
 
         listView.setAdapter(mArtistAdapter);
 
-        // TODO listView.setOnItemClickListener
+        if (savedInstanceState != null) {
+            // Restore value of members from saved state
+            lstArtists = savedInstanceState.getParcelableArrayList(String.valueOf(R.string.ARTIST_QUERY_RESULT_CONSTANT));
+            mArtistAdapter.clear();
+            mArtistAdapter.addAll(lstArtists);
+        }
+
         listView.setOnItemClickListener(
                 new AdapterView.OnItemClickListener() {
                     @Override
@@ -192,6 +201,12 @@ public class SearchFragment extends Fragment {
 
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList(String.valueOf(R.string.ARTIST_QUERY_RESULT_CONSTANT), new ArrayList<Parcelable>(lstArtists));
+        super.onSaveInstanceState(outState);
+    }
+
     public class FetchContentTask extends AsyncTask<String, Void, List<RowItem>> {
 
 
@@ -224,6 +239,7 @@ public class SearchFragment extends Fragment {
         // Invoked on the UI thread after the background computation finishes
         @Override
         protected void onPostExecute(List<RowItem> result) {
+            lstArtists = result;
             mArtistAdapter.clear();
             if (result != null && result.size() > 0) {
                 mArtistAdapter.addAll(result);

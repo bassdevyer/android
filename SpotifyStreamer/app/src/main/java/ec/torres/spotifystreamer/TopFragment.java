@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,12 @@ public class TopFragment extends Fragment {
 
     private String mArtistId;
 
+    private ListView listView;
+
+    private List<TrackItem> lstTrackItem;
+
+    private String mArtistName;
+
     private static final String LOG_TAG = TopFragment.class.getName();
 
     public TopFragment() {
@@ -46,23 +53,31 @@ public class TopFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_top, container, false);
 
 
-
         mTopAdapter = new TopListViewAdapter(getActivity(), R.layout.track_item, new ArrayList<TrackItem>());
 
-        ListView listView = (ListView) rootView.findViewById(R.id.listview_top);
+        listView = (ListView) rootView.findViewById(R.id.listview_top);
 
         listView.setAdapter(mTopAdapter);
-
-        if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
-            Bundle bundle = intent.getExtras();
-            mArtistId = bundle.getString(Intent.EXTRA_TEXT);
-            FetchContentTask fetchContentTask = new FetchContentTask();
-            fetchContentTask.execute(mArtistId);
-            if (intent.hasExtra(Intent.EXTRA_TITLE)) {
-                String mArtistName = bundle.getString(Intent.EXTRA_TITLE);
-                getActivity().getActionBar().setSubtitle(mArtistName);
+// Check whether we're recreating a previously destroyed instance
+        if (savedInstanceState != null) {
+            // Restore value of members from saved state
+            lstTrackItem = savedInstanceState.getParcelableArrayList(String.valueOf(R.string.TOP_CONSTANT));
+            mArtistName = savedInstanceState.getString(String.valueOf(R.string.ARTIST_NAME_CONSTANT));
+            mTopAdapter.clear();
+            mTopAdapter.addAll(lstTrackItem);
+        } else {
+            // Probably initialize members with default values for a new instance
+            if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
+                Bundle bundle = intent.getExtras();
+                mArtistId = bundle.getString(Intent.EXTRA_TEXT);
+                FetchContentTask fetchContentTask = new FetchContentTask();
+                fetchContentTask.execute(mArtistId);
+                if (intent.hasExtra(Intent.EXTRA_TITLE)) {
+                    mArtistName = bundle.getString(Intent.EXTRA_TITLE);
+                }
             }
         }
+        getActivity().getActionBar().setSubtitle(mArtistName);
 
 
 
@@ -71,8 +86,14 @@ public class TopFragment extends Fragment {
 //        listView.setAdapter(mTopAdapter);
 
         // TODO listView.setOnItemClickListener
-
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putParcelableArrayList(String.valueOf(R.string.TOP_CONSTANT), new ArrayList<Parcelable>(lstTrackItem));
+        savedInstanceState.putString(String.valueOf(R.string.ARTIST_NAME_CONSTANT), mArtistName);
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     public class FetchContentTask extends AsyncTask<String, Void, List<TrackItem>> {
@@ -125,6 +146,7 @@ public class TopFragment extends Fragment {
         @Override
         protected void onPostExecute(List<TrackItem> result) {
             if (result != null && result.size() > 0) {
+                lstTrackItem = result;
                 mTopAdapter.clear();
                 mTopAdapter.addAll(result);
             } else {

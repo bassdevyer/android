@@ -1,11 +1,13 @@
 package ec.torres.spotifystreamer;
 
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Created by whoami on 6/25/15.
  */
-public class RowItem {
+public class RowItem implements Parcelable {
     private Uri thumbnail;
     private String name;
     private String id;
@@ -38,5 +40,15 @@ public class RowItem {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
     }
 }

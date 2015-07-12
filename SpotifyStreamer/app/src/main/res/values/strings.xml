@@ -11,4 +11,9 @@
     <string name="exit_button_label">Exit</string>
     <string name="query_hint">Search artist...</string>
     <string name="title_activity_searchable">SearchableActivity</string>
+
+    <string name="TOP_CONSTANT" translatable="false">top</string>
+    <string name="ARTIST_NAME_CONSTANT" translatable="false">artistName</string>
+    <string name="ARTIST_QUERY_RESULT_CONSTANT" translatable="false">artistQueryResult</string>
+
 </resources>
