@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Custom View in Drawer</string>
+
+    <string name="main_fragment_text">Use the Navigation Drawer Menu</string>
+    <string name="main_fragment_text_first">Main View - Use the Drawer Menu</string>
+    <string name="more_views_fragment_text">A Placeholder for More Views</string>
+
+    <string name="title_section1">Main View</string>
+    <string name="title_section2">Custom View</string>
+    <string name="title_section3">More Views</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+
+    <string name="action_settings">Settings</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
